@@ -1,7 +1,5 @@
 
-function analyzeMatrix(matrixValues, b) 
-{
-
+function analyzeMatrix(matrixValues, b) {
   if (matrixValues.length !== 9) {
     console.error(
       "Invalid number of elements in the matrixValues array. It should have exactly 9 elements."
@@ -13,30 +11,32 @@ function analyzeMatrix(matrixValues, b)
     det.push(matrixValues.slice(i * 3, (i + 1) * 3));
   }
   const extra = det;
-  
-  for (let i = 0; i < 3; i++) 
-  {
+
+  for (let i = 0; i < 3; i++) {
     extra[i].push(b[i]);
   }
 
-
-  const matrixB = [
-    [b[0]],
-    [b[1]],
-    [b[2]]
-  ];
-
-
-
+  const matrixB = [[b[0]], [b[1]], [b[2]]];
 
   let extras = extra;
   console.info("INverse matrix ");
-  console.table(inverseMatrixs(extras,matrixB));
-  
+  console.table(inverseMatrixs(extras, matrixB));
+
   crammer(det, b);
   console.info("Gauesssian ");
-  console.table( gaussElimination(extra));
-  
+  console.table(gaussElimination(extra));
+
+
+   // jacobi
+  const x = [0, 0, 0];
+
+  const maxIterations = 1000;
+  const tolerance = 1e-6;
+
+  jacobiMethod(det, b, x, maxIterations, tolerance);
+
+  // Output the result
+  console.log("Solution:", x);
 }
 
 function crammer(det, B) {
@@ -179,3 +179,40 @@ function inverseMatrixs(det,b) {
 }
 
 
+function jacobiMethod(A, b, x, maxIterations, tolerance) {
+  const n = b.length;
+  const x_new = new Array(n);
+
+  for (let iter = 0; iter < maxIterations; ++iter) {
+      for (let i = 0; i < n; ++i) {
+          x_new[i] = b[i];
+
+          for (let j = 0; j < n; ++j) {
+              if (i !== j) {
+                  x_new[i] -= A[i][j] * x[j];
+              }
+          }
+
+          x_new[i] /= A[i][i];
+      }
+
+      // Check for convergence
+      let maxDiff = 0.0;
+      for (let i = 0; i < n; ++i) {
+          maxDiff = Math.max(maxDiff, Math.abs(x_new[i] - x[i]));
+      }
+
+      // Update solution
+      for (let i = 0; i < n; ++i) {
+          x[i] = x_new[i];
+      }
+
+      // Check for convergence
+      if (maxDiff < tolerance) {
+          console.log(`Converged after ${iter + 1} iterations.`);
+          return;
+      }
+  }
+
+  console.log("Maximum number of iterations reached.");
+}
