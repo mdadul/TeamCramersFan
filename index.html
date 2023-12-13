@@ -17,7 +17,7 @@
       </h2>
     </div>
 
-    <div class="grid md:grid-cols-2 px-8 gap-5">
+    <div class="grid md:grid-cols-2 px-4 md:px-8">
       <form onsubmit="submitForm(event)">
         <div class="flex gap-2">
           <input
@@ -146,10 +146,10 @@
         </div>
       </form>
 
-      <div class="px-5">
+      <div class="md:px-5">
         <div
           id="logMsg"
-          class="text-mono h-[30vh] mt-5 px-5 overflow-y-scroll"
+          class="text-mono md:h-[30vh] md:overflow-y-scroll"
         ></div>
       </div>
     </div>
@@ -158,17 +158,21 @@
       <canvas id="myChart"></canvas>
     </div>
 
-    <div class=" fixed bottom-3 right-5 bg-gray-800 cursor-pointer rounded-md px-4 py-2 text-white" onclick="showTeam()">
-      <p class="text-md">
-        Developed with ❤️ by Team Camer's Fan
-      </p>
+    <div
+      class="hidden md:block md:fixed bottom-3 right-5 bg-gray-800 cursor-pointer rounded-md px-4 py-2 text-white"
+      onclick="showTeam()"
+    >
+      <p class="text-md">Developed with ❤️ by Team Camer's Fan</p>
     </div>
 
     <div
       id="team"
-      class="fixed hidden top-[25%] left-[15%] bg-white shadow-xl border  p-4 rounded-lg"
+      class="md:fixed md:hidden top-0 left-0 md:top-[25%] md:left-[15%] bg-white shadow-xl border p-4 rounded-lg"
     >
-      <button onclick="closeModal()" class="absolute top-0 right-0 p-2">
+      <h2 class="font-bold text-center text-2xl mt-5 text-red-700 md:hidden">
+        Our Team
+      </h2>
+      <button onclick="closeModal()" class="hidden md:block top-0 right-0 p-2">
         <svg
           class="w-6 h-6 text-gray-500 hover:text-gray-700"
           fill="none"
@@ -184,10 +188,11 @@
           ></path>
         </svg>
       </button>
+
       <div class="grid md:grid-cols-4 gap-5 justify-center items-center mt-8">
         <div class="text-center">
           <img
-            class="rounded-xl sm:w-48 sm:h-48 lg:w-60 lg:h-60 mx-auto"
+            class="rounded-xl sm:w-12 sm:h-12 lg:w-60 lg:h-60 mx-auto"
             src="https://media.licdn.com/dms/image/D5603AQHNmVyKIB25MA/profile-displayphoto-shrink_200_200/0/1676230027195?e=1707955200&v=beta&t=DzEKTgzpMVOWxH1b3JdcgJIv22nTajx8sXWO0sqMYSw"
             alt="Sorowar Mahabub"
           />
@@ -200,7 +205,7 @@
             <p
               class="text-xs text-gray-600 sm:text-sm lg:text-base dark:text-gray-400"
             >
-              Documentation 
+              Documentation & Coding 
             </p>
           </div>
         </div>
@@ -238,13 +243,13 @@
             <p
               class="text-xs text-gray-600 sm:text-sm lg:text-base dark:text-gray-400"
             >
-              Debugging & Frontend
-            </p>
+            Debugging & Frontend
+          </p>
           </div>
         </div>
         <div class="text-center">
           <img
-            class="rounded-xl sm:w-48 sm:h-48 lg:w-60 lg:h-60 mx-auto"
+            class="rounded-xl sm:w-12 sm:h-12 lg:w-60 lg:h-60 mx-auto"
             src="https://i.ibb.co/YD4tcrF/sakif.jpg"
             alt="Image Description"
           />
