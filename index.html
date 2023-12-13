@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NM Project : Team Camer's Fan</title>
+    <!-- <link rel="stylesheet" href="style.css" /> -->
+    <script src="index.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body class="h-screen">
+    <div class="text-center py-6">
+      <h1 class="text-3xl font-semibold text-red-500">Team Cramer's Fan</h1>
+      <h2 class="text-lg font-mono font-semibold">
+        Project Topic : System of Linear Equations
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 px-8 gap-5">
+      <form onsubmit="submitForm(event)">
+        <div class="flex gap-2">
+          <input
+            type="number"
+            id="input1"
+            placeholder="A11"
+            class="border border-gray-300 rounded-md w-full px-3 py-2 mt-1 mb-5 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-red-500"
+            required
+          />
+
+          <input
+            type="number"
+            id="input2"
+            placeholder="A12"
+            class="border border-gray-300 rounded-md w-full px-3 py-2 mt-1 mb-5 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-red-500"
+            required
+          />
+
+          <input
+            type="number"
+            id="input3"
+            placeholder="A13"
+            class="border border-gray-300 rounded-md w-full px-3 py-2 mt-1 mb-5 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-red-500"
+            required
+          />
+
+          <input
+            type="number"
+            id="input4"
+            placeholder="B1"
+            class="border border-gray-300 rounded-md w-full px-3 py-2 mt-1 mb-5 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-red-500"
+            required
+          />
+        </div>
+
+        <div class="flex gap-2">
+          <input
+            type="number"
+            id="input5"
+            placeholder="A21"
+            class="border border-gray-300 rounded-md w-full px-3 py-2 mt-1 mb-5 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-red-500"
+            required
+          />
+
+          <input
+            type="number"
+            id="input6"
+            placeholder="A22"
+            class="border border-gray-300 rounded-md w-full px-3 py-2 mt-1 mb-5 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-red-500"
+            required
+          />
+
+          <input
+            type="number"
+            id="input7"
+            placeholder="A23"
+            class="border border-gray-300 rounded-md w-full px-3 py-2 mt-1 mb-5 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-red-500"
+            required
+          />
+
+          <input
+            type="number"
+            id="input8"
+            placeholder="B2"
+            class="border border-gray-300 rounded-md w-full px-3 py-2 mt-1 mb-5 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-red-500"
+            required
+          />
+        </div>
+
+        <div class="flex gap-2">
+          <input
+            type="number"
+            id="input9"
+            placeholder="A31"
+            class="border border-gray-300 rounded-md w-full px-3 py-2 mt-1 mb-5 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-red-500"
+            required
+          />
+
+          <input
+            type="number"
+            id="input10"
+            placeholder="A32"
+            class="border border-gray-300 rounded-md w-full px-3 py-2 mt-1 mb-5 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-red-500"
+            required
+          />
+
+          <input
+            type="number"
+            id="input11"
+            placeholder="A33"
+            class="border border-gray-300 rounded-md w-full px-3 py-2 mt-1 mb-5 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-red-500"
+            required
+          />
+
+          <input
+            type="number"
+            id="input12"
+            class="border border-gray-300 rounded-md w-full px-3 py-2 mt-1 mb-5 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-red-500"
+            placeholder="B3"
+            required
+          />
+        </div>
+        <div class="flex gap-2 w-full">
+          <button
+            type="submit"
+            class="bg-green-600 w-full px-4 py-2 text-white rounded-md hover:bg-green-500"
+          >
+            Analyze
+          </button>
+
+          <button
+            type="button"
+            onclick="resetForm()"
+            class="px-4 py-2 bg-red-500 rounded-md text-white hover:bg-red-400 w-full"
+          >
+            Reset
+          </button>
+
+          <button
+            type="button"
+            onclick="randomize()"
+            class="px-4 py-2 bg-blue-500 rounded-md text-white hover:bg-blue-400 w-full"
+          >
+            Randomize
+          </button>
+        </div>
+      </form>
+
+      <div class="px-5">
+        <div
+          id="logMsg"
+          class="text-mono h-[30vh] mt-5 px-5 overflow-y-scroll"
+        ></div>
+      </div>
+    </div>
+
+    <div class="w-1/2 px-5 rounded-md">
+      <canvas id="myChart"></canvas>
+    </div>
+
+    <div class=" fixed bottom-3 right-5 bg-gray-800 cursor-pointer rounded-md px-4 py-2 text-white" onclick="showTeam()">
+      <p class="text-md">
+        Developed with ❤️ by Team Camer's Fan
+      </p>
+    </div>
+
+    <div
+      id="team"
+      class="fixed hidden top-[25%] left-[15%] bg-white shadow-xl border  p-4 rounded-lg"
+    >
+      <button onclick="closeModal()" class="absolute top-0 right-0 p-2">
+        <svg
+          class="w-6 h-6 text-gray-500 hover:text-gray-700"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          ></path>
+        </svg>
+      </button>
+      <div class="grid md:grid-cols-4 gap-5 justify-center items-center mt-8">
+        <div class="text-center">
+          <img
+            class="rounded-xl sm:w-48 sm:h-48 lg:w-60 lg:h-60 mx-auto"
+            src="https://media.licdn.com/dms/image/D5603AQHNmVyKIB25MA/profile-displayphoto-shrink_200_200/0/1676230027195?e=1707955200&v=beta&t=DzEKTgzpMVOWxH1b3JdcgJIv22nTajx8sXWO0sqMYSw"
+            alt="Sorowar Mahabub"
+          />
+          <div class="mt-2 sm:mt-4">
+            <h3
+              class="text-sm font-medium text-gray-800 sm:text-base lg:text-lg dark:text-gray-200"
+            >
+              Sorowar Mahabub
+            </h3>
+            <p
+              class="text-xs text-gray-600 sm:text-sm lg:text-base dark:text-gray-400"
+            >
+              Documentation 
+            </p>
+          </div>
+        </div>
+        <div class="text-center">
+          <img
+            class="rounded-xl sm:w-48 sm:h-48 lg:w-60 lg:h-60 mx-auto"
+            src="https://media.licdn.com/dms/image/D5603AQH-D_RofOQzzw/profile-displayphoto-shrink_200_200/0/1685878988961?e=1707955200&v=beta&t=-LvY9JgMQeFknwPKewBI2KDs15r7XDP38yXb7BQ4ixk"
+            alt="Jobair Uddin Jesan"
+          />
+          <div class="mt-2 sm:mt-4">
+            <h3
+              class="text-sm font-medium text-gray-800 sm:text-base lg:text-lg dark:text-gray-200"
+            >
+              Jobair Uddin Jesan
+            </h3>
+            <p
+              class="text-xs text-gray-600 sm:text-sm lg:text-base dark:text-gray-400"
+            >
+              Coding & Debugging
+            </p>
+          </div>
+        </div>
+        <div class="text-center">
+          <img
+            class="rounded-xl sm:w-48 sm:h-48 lg:w-60 lg:h-60 mx-auto"
+            src="https://media.licdn.com/dms/image/D5603AQFUgb5O4FiBAQ/profile-displayphoto-shrink_200_200/0/1691063117325?e=1707955200&v=beta&t=a5YKHgmVUlL4sJis8fHPiGlrGkeRAiwhj1Sg7rv54gk"
+            alt="Emdadul Islam"
+          />
+          <div class="mt-2 sm:mt-4">
+            <h3
+              class="text-sm font-medium text-gray-800 sm:text-base lg:text-lg dark:text-gray-200"
+            >
+              Emdadul Islam
+            </h3>
+            <p
+              class="text-xs text-gray-600 sm:text-sm lg:text-base dark:text-gray-400"
+            >
+              Debugging & Frontend
+            </p>
+          </div>
+        </div>
+        <div class="text-center">
+          <img
+            class="rounded-xl sm:w-48 sm:h-48 lg:w-60 lg:h-60 mx-auto"
+            src="https://i.ibb.co/YD4tcrF/sakif.jpg"
+            alt="Image Description"
+          />
+          <div class="mt-2 sm:mt-4">
+            <h3
+              class="text-sm font-medium text-gray-800 sm:text-base lg:text-lg dark:text-gray-200"
+            >
+              Sakif Azwad
+            </h3>
+            <p
+              class="text-xs text-gray-600 sm:text-sm lg:text-base dark:text-gray-400"
+            >
+              Testing
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
