@@ -1,6 +1,6 @@
-const X = [];
-const Y = [];
-const Z = [];
+let X = [];
+let Y = [];
+let Z = [];
 
 function analyzeMatrix(matrixValues, b) {
   if (matrixValues.length !== 9) {
@@ -8,13 +8,12 @@ function analyzeMatrix(matrixValues, b) {
     return;
   }
   const det = [];
-  console.log(matrixValues);
+
   const extra_det = [];
   for (let i = 0; i < 3; i++) {
     det.push(matrixValues.slice(i * 3, (i + 1) * 3));
     extra_det.push(matrixValues.slice(i * 3, (i + 1) * 3));
   }
-  console.table(det);
 
   const extra = det;
 
@@ -36,12 +35,22 @@ function analyzeMatrix(matrixValues, b) {
   const x = [0, 0, 0];
 
   const tolerance = 0.0001;
-  const maxIterations = 1000;
+  const maxIterations = 5000;
 
-  console.table(extra_det);
+  const jacobi = jacobiMethod(extra_det, b, x, tolerance, maxIterations);
 
-  const X = jacobiMethod(extra_det, b, x, tolerance, maxIterations);
-  console.log(X);
+  if (jacobi !== null) {
+    X.push(jacobi[0]);
+    Y.push(jacobi[1]);
+    Z.push(jacobi[2]);
+    showLogMsg("Jacobi Method", jacobi);
+  } else {
+    X.push(0);
+    Y.push(0);
+    Z.push(0);
+  }
+
+  showChart(X, Y, Z);
 }
 
 function crammer(det, B) {
@@ -228,8 +237,14 @@ function jacobiMethod(matrix, b, initial, tolerance, maxIterations) {
 
     x = xNext.slice();
   }
+  const logMsg = document.getElementById("logMsg");
+  const p = document.createElement("p");
+  p.style = "font-weight: bold";
+  p.style.color = "red";
+  p.innerHTML = "Jacobi: Did not converge within " + maxIterations + " iter";
 
-  console.log(`Did not converge within ${maxIterations} iter`);
+  logMsg.appendChild(p);
+
   return null;
 }
 
@@ -238,7 +253,9 @@ function jacobiMethod(matrix, b, initial, tolerance, maxIterations) {
 function submitForm(event) {
   event.preventDefault();
 
-  console.log(X, Y, Z)
+  X = [];
+  Y = [];
+  Z = [];
 
   const matrixValues = [];
   for (let i = 1; i <= 12; i++) {
@@ -253,7 +270,6 @@ function submitForm(event) {
     b.push(inputValue);
   }
 
-  //  console.log(matrixValues);
   analyzeMatrix(matrixValues, b);
 }
 
@@ -261,7 +277,10 @@ function resetForm() {
   for (let i = 1; i <= 12; i++) {
     document.getElementById(`input${i}`).value = "";
   }
-
+  X = [];
+  Y = [];
+  Z = [];
+  showChart(X, Y, Z);
   resetLog();
 }
 
@@ -319,64 +338,78 @@ function showTeam() {
   document.getElementById("team").style.display = "block";
 }
 
-var options = {
-  series: [
-    {
-      name: "X",
-      data: X,
-    },
-    {
-      name: "Y",
-      data: Y,
-    },
-    {
-      name: "Z",
-      data: Z,
-    },
-  ],
-  chart: {
-    type: "line",
-    height: 350,
-  },
-  plotOptions: {
-    bar: {
-      horizontal: false,
-      columnWidth: "55%",
-      endingShape: "rounded",
-    },
-  },
-  dataLabels: {
-    enabled: false,
-  },
-  stroke: {
-    show: true,
-    width: 2,
-    colors: ["transparent"],
-  },
-  xaxis: {
-    categories: [
-      "Inverse Matrix",
-      "Cramer's Rule",
-      "Gauss Elimination",
-      
+function showChart(X, Y, Z) {
+  X.map((x, i) => {
+    X[i] = x.toFixed(6);
+  });
+
+  Y.map((y, i) => {
+    Y[i] = y.toFixed(6);
+  });
+
+  Z.map((z, i) => {
+    Z[i] = z.toFixed(6);
+  });
+
+  var options = {
+    series: [
+      {
+        name: "X",
+        data: X,
+      },
+      {
+        name: "Y",
+        data: Y,
+      },
+      {
+        name: "Z",
+        data: Z,
+      },
     ],
-  },
-  yaxis: {
-    title: {
-      text: "Solution",
+    chart: {
+      type: "bar",
+      height: 350,
     },
-  },
-  fill: {
-    opacity: 1,
-  },
-  tooltip: {
-    y: {
-      formatter: function (val) {
-        return val;
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: "55%",
+        endingShape: "rounded",
       },
     },
-  },
-};
+    dataLabels: {
+      enabled: false,
+    },
+    stroke: {
+      show: true,
+      width: 2,
+      colors: ["transparent"],
+    },
+    xaxis: {
+      categories: [
+        "Inverse Matrix",
+        "Cramer's Rule",
+        "Gauss Elimination",
+        "Jacobi",
+      ],
+    },
+    yaxis: {
+      title: {
+        text: "Solution",
+      },
+    },
+    fill: {
+      opacity: 1,
+    },
+    tooltip: {
+      y: {
+        formatter: function (val) {
+          return val;
+        },
+      },
+    },
+  };
 
-var chart = new ApexCharts(document.getElementById("myChart"), options);
-chart.render();
+  var chart = new ApexCharts(document.getElementById("myChart"), options);
+  chart.render();
+}
