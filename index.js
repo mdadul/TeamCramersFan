@@ -1,7 +1,10 @@
 let X = [];
 let Y = [];
 let Z = [];
-
+let crammer_itr = 1;
+let jacobi_itr  = 0;
+let gauss_itr = 0;
+let inverse_itr = 0;
 function analyzeMatrix(matrixValues, b) {
   if (matrixValues.length !== 9) {
     document.getElementById("errorMsg").innerHTML = "Invalid matrix size.";
@@ -35,7 +38,7 @@ function analyzeMatrix(matrixValues, b) {
   const x = [0, 0, 0];
 
   const tolerance = 0.0001;
-  const maxIterations = 5000;
+  const maxIterations = 100;
 
   const jacobi = jacobiMethod(extra_det, b, x, tolerance, maxIterations);
 
@@ -52,6 +55,8 @@ function analyzeMatrix(matrixValues, b) {
 
   showChart(X, Y, Z);
   showIteration();
+
+  console.log(jacobi_itr + " < > " + gauss_itr + " < > " + crammer_itr + " < > " + inverse_itr );
 }
 
 function crammer(det, B) {
@@ -101,12 +106,14 @@ function gaussElimination(matrix) {
     let divisor = matrix[i][i];
     for (let j = i; j < n + 1; j++) {
       matrix[i][j] /= divisor;
+      gauss_itr++; // itrattion
     }
     for (let k = 0; k < n; k++) {
       if (k !== i) {
         let factor = matrix[k][i];
         for (let j = i; j < n + 1; j++) {
           matrix[k][j] -= factor * matrix[i][j];
+          gauss_itr++; // iteration
         }
       }
     }
@@ -125,19 +132,19 @@ function gaussElimination(matrix) {
   return solution;
 }
 
-function matrixMultiplication(matrixA, matrixB) {
-  let result = [];
-  for (let i = 0; i < 3; i++) {
-    result[i] = [];
-    for (let j = 0; j < 3; j++) {
-      result[i][j] = 0;
-      for (let k = 0; k < 3; k++) {
-        result[i][j] += matrixA[i][k] * matrixB[k][j];
-      }
-    }
-  }
-  return result;
-}
+// function matrixMultiplication(matrixA, matrixB) {
+//   let result = [];
+//   for (let i = 0; i < 3; i++) {
+//     result[i] = [];
+//     for (let j = 0; j < 3; j++) {
+//       result[i][j] = 0;
+//       for (let k = 0; k < 3; k++) {
+//         result[i][j] += matrixA[i][k] * matrixB[k][j];
+//       }
+//     }
+//   }
+//   return result;
+// }
 
 function multiply(matrix1, matrix2) {
   if (
@@ -156,6 +163,7 @@ function multiply(matrix1, matrix2) {
   for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 3; j++) {
       result[i][0] += matrix1[i][j] * matrix2[j][0];
+      inverse_itr++;
     }
   }
 
@@ -182,6 +190,7 @@ function inverseMatrixs(det, b) {
       det[0][k] *
       (det[1][(k + 1) % n] * det[2][(k + 2) % n] -
         det[1][(k + 2) % n] * det[2][(k + 1) % n]);
+        inverse_itr++
   }
 
   let d = Ans;
@@ -195,6 +204,7 @@ function inverseMatrixs(det, b) {
           (det[(j + 1) % n][(i + 1) % n] * det[(j + 2) % n][(i + 2) % n] -
             det[(j + 1) % n][(i + 2) % n] * det[(j + 2) % n][(i + 1) % n]) /
           d;
+          inverse_itr++
       }
     }
   } else {
@@ -209,7 +219,7 @@ function jacobiMethod(matrix, b, initial, tolerance, maxIterations) {
   const n = matrix.length;
   let x = initial.slice();
 
-  for (let iteration = 0; iteration < maxIterations; iteration++) {
+  for (let itr = 0; itr < maxIterations; itr++) {
     const xNext = [];
 
     for (let i = 0; i < n; i++) {
@@ -218,6 +228,7 @@ function jacobiMethod(matrix, b, initial, tolerance, maxIterations) {
         if (i !== j) {
           sum -= matrix[i][j] * x[j];
         }
+       
       }
       xNext[i] = sum / matrix[i][i];
     }
@@ -228,11 +239,15 @@ function jacobiMethod(matrix, b, initial, tolerance, maxIterations) {
       const diff = Math.abs(xNext[i] - x[i]);
       if (diff > maxDiff) {
         maxDiff = diff;
+       
+
       }
     }
+   
 
     if (maxDiff < tolerance) {
-      console.log(`Converged in ${iteration + 1}itr `);
+      console.log(`Converged in ${itr + 1}itr `);
+      jacobi_itr = itr + 1;
       return xNext;
     }
 
@@ -419,7 +434,7 @@ function showChart(X, Y, Z) {
 function showIteration(){
      
   var options = {
-    series: [44, 55, 41, 17, 15],
+    series: [inverse_itr, crammer_itr, gauss_itr, jacobi_itr],
     chart: {
     width: 380,
     type: 'donut',
@@ -438,11 +453,12 @@ function showIteration(){
   },
   legend: {
     formatter: function(val, opts) {
-      return val + " - " + opts.w.globals.series[opts.seriesIndex]
+      var legendNames = ['Inverse', 'Cramers', 'Gauss', 'Jacobi'];
+      return legendNames[opts.seriesIndex] + " - " + opts.w.globals.series[opts.seriesIndex];
     }
   },
   title: {
-    text: 'Gradient Donut with custom Start-angle'
+    text: 'Number of iterations done by every Method'
   },
   responsive: [{
     breakpoint: 480,
