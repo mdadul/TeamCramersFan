@@ -8,33 +8,40 @@ function analyzeMatrix(matrixValues, b) {
     return;
   }
   const det = [];
+  console.log(matrixValues);
+  const extra_det = [];
   for (let i = 0; i < 3; i++) {
     det.push(matrixValues.slice(i * 3, (i + 1) * 3));
+    extra_det.push(matrixValues.slice(i * 3, (i + 1) * 3));
   }
+  console.table(det);
 
   const extra = det;
 
   for (let i = 0; i < 3; i++) {
     extra[i].push(b[i]);
   }
-
+  // console.table(extra)
   const matrixB = [[b[0]], [b[1]], [b[2]]];
 
   let extras = extra;
 
   showLogMsg("Inverse Matrix sol: ", inverseMatrixs(extras, matrixB));
 
-  crammer(det, b);
+  crammer(extra_det, b);
 
   gaussElimination(extra);
 
   // jacobi
   const x = [0, 0, 0];
 
+  const tolerance = 0.0001;
   const maxIterations = 1000;
-  const tolerance = 1e-6;
 
-  jacobiMethod(det, b, x, maxIterations, tolerance);
+  console.table(extra_det);
+
+  const X = jacobiMethod(extra_det, b, x, tolerance, maxIterations);
+  console.log(X);
 }
 
 function crammer(det, B) {
@@ -188,7 +195,43 @@ function inverseMatrixs(det, b) {
   return multiply(inverseMatrix, b);
 }
 
-function jacobiMethod(A, b, x, maxIterations, tolerance) {}
+function jacobiMethod(matrix, b, initial, tolerance, maxIterations) {
+  const n = matrix.length;
+  let x = initial.slice();
+
+  for (let iteration = 0; iteration < maxIterations; iteration++) {
+    const xNext = [];
+
+    for (let i = 0; i < n; i++) {
+      let sum = b[i];
+      for (let j = 0; j < n; j++) {
+        if (i !== j) {
+          sum -= matrix[i][j] * x[j];
+        }
+      }
+      xNext[i] = sum / matrix[i][i];
+    }
+
+    // Check for convergence
+    let maxDiff = 0;
+    for (let i = 0; i < n; i++) {
+      const diff = Math.abs(xNext[i] - x[i]);
+      if (diff > maxDiff) {
+        maxDiff = diff;
+      }
+    }
+
+    if (maxDiff < tolerance) {
+      console.log(`Converged in ${iteration + 1}itr `);
+      return xNext;
+    }
+
+    x = xNext.slice();
+  }
+
+  console.log(`Did not converge within ${maxIterations} iter`);
+  return null;
+}
 
 // Main program
 
