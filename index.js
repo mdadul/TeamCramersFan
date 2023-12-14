@@ -4,33 +4,40 @@ function analyzeMatrix(matrixValues, b) {
     return;
   }
   const det = [];
+  console.log(matrixValues);
+  const extra_det = [];
   for (let i = 0; i < 3; i++) {
     det.push(matrixValues.slice(i * 3, (i + 1) * 3));
+    extra_det.push(matrixValues.slice(i * 3, (i + 1) * 3));
   }
+  console.table(det);
 
   const extra = det;
 
   for (let i = 0; i < 3; i++) {
     extra[i].push(b[i]);
   }
-
+  // console.table(extra)
   const matrixB = [[b[0]], [b[1]], [b[2]]];
 
   let extras = extra;
 
   showLogMsg("Inverse Matrix sol: ", [inverseMatrixs(extras, matrixB)]);
 
-  crammer(det, b);
+  crammer(extra_det, b);
 
   gaussElimination(extra);
 
   // jacobi
   const x = [0, 0, 0];
 
+  const tolerance = 0.0001;
   const maxIterations = 1000;
-  const tolerance = 1e-6;
 
-  jacobiMethod(det, b, x, maxIterations, tolerance);
+  console.table(extra_det);
+
+  const X = jacobiMethod(extra_det, b, x, tolerance, maxIterations);
+  console.log(X);
 }
 
 function crammer(det, B) {
@@ -172,72 +179,42 @@ function inverseMatrixs(det, b) {
   return multiply(inverseMatrix, b);
 }
 
-function jacobiMethod(A, b, x, maxIterations, tolerance) {
-  // const n = b.length;
-  // const x_new = new Array(n);
+function jacobiMethod(matrix, b, initial, tolerance, maxIterations) {
+  const n = matrix.length;
+  let x = initial.slice();
 
-  // for (let iter = 0; iter < maxIterations; ++iter) {
-  //   for (let i = 0; i < n; ++i) {
-  //     x_new[i] = b[i];
+  for (let iteration = 0; iteration < maxIterations; iteration++) {
+    const xNext = [];
 
-  //     for (let j = 0; j < n; ++j) {
-  //       if (i !== j) {
-  //         x_new[i] -= A[i][j] * x[j];
-  //       }
-  //     }
+    for (let i = 0; i < n; i++) {
+      let sum = b[i];
+      for (let j = 0; j < n; j++) {
+        if (i !== j) {
+          sum -= matrix[i][j] * x[j];
+        }
+      }
+      xNext[i] = sum / matrix[i][i];
+    }
 
-  //     x_new[i] /= A[i][i];
-  //   }
+    // Check for convergence
+    let maxDiff = 0;
+    for (let i = 0; i < n; i++) {
+      const diff = Math.abs(xNext[i] - x[i]);
+      if (diff > maxDiff) {
+        maxDiff = diff;
+      }
+    }
 
-  //   // Check for convergence
-  //   let maxDiff = 0.0;
-  //   for (let i = 0; i < n; ++i) {
-  //     maxDiff = Math.max(maxDiff, Math.abs(x_new[i] - x[i]));
-  //   }
+    if (maxDiff < tolerance) {
+      console.log(`Converged in ${iteration + 1}itr `);
+      return xNext;
+    }
 
-  //   // Update solution
-  //   for (let i = 0; i < n; ++i) {
-  //     x[i] = x_new[i];
-  //   }
+    x = xNext.slice();
+  }
 
-  //   // Check for convergence
-  //   if (maxDiff < tolerance) {
-  //     console.log(`Converged after ${iter + 1} iterations.`);
-
-  //     showLogMsg("Jacobi Method", [x]);
-  //     return;
-  //   }
-  // }
-
-  // document.getElementById("logMsg").innerHTML =
-  //   "Maximum number of iterations reached";
-
-  // const n = b.length;
-  // const x_new = new Array(n);
-
-  // do {
-  //   for (let i = 0; i < n; ++i) {
-  //     x_new[i] = b[i];
-
-  //     for (let j = 0; j < n; ++j) {
-  //       if (i !== j) {
-  //         x_new[i] -= A[i][j] * x[j];
-  //       }
-  //     }
-
-  //     x_new[i] /= A[i][i];
-  //   }
-
-  //   // Calculate errors
-  //   const errors = x.map((xi, i) => Math.abs(xi - x_new[i]));
-
-  //   // Update solution
-  //   x = x_new.slice();
-
-  //   // Check for convergence
-  // } while (errors.some((error) => error > tolerance));
-
-  // return x;
+  console.log(`Did not converge within ${maxIterations} iter`);
+  return null;
 }
 
 // Main program
