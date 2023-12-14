@@ -7,12 +7,13 @@
     <!-- <link rel="stylesheet" href="style.css" /> -->
     <script src="index.js" defer></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   </head>
   <body class="h-screen">
-    <div class="text-center py-6">
+    <div class="text-center py-6 px-2">
       <h1 class="text-3xl font-semibold text-red-500">Team Cramer's Fan</h1>
-      <h2 class="text-lg font-mono font-semibold">
+      <h2 class="text-lg font-mono font-semibold px-3">
         Project Topic : System of Linear Equations
       </h2>
     </div>
@@ -146,16 +147,16 @@
         </div>
       </form>
 
-      <div class="md:px-5">
+      <div class="md:px-5 mt-4">
         <div
           id="logMsg"
-          class="text-mono md:h-[30vh] md:overflow-y-scroll"
+          class="text-mono max-w-full md:h-[30vh] md:overflow-y-scroll"
         ></div>
       </div>
     </div>
 
     <div class="w-1/2 px-5 rounded-md">
-      <canvas id="myChart"></canvas>
+      <div id="myChart"></div>
     </div>
 
     <div
@@ -198,14 +199,12 @@
           />
           <div class="mt-2 sm:mt-4">
             <h3
-              class="text-sm font-medium text-gray-800 sm:text-base lg:text-lg "
+              class="text-sm font-medium text-gray-800 sm:text-base lg:text-lg"
             >
               Sorowar Mahabub
             </h3>
-            <p
-              class="text-xs text-gray-600 sm:text-sm lg:text-base "
-            >
-              Documentation & Coding 
+            <p class="text-xs text-gray-600 sm:text-sm lg:text-base">
+              Documentation & Coding
             </p>
           </div>
         </div>
@@ -217,13 +216,11 @@
           />
           <div class="mt-2 sm:mt-4">
             <h3
-              class="text-sm font-medium text-gray-800 sm:text-base lg:text-lg "
+              class="text-sm font-medium text-gray-800 sm:text-base lg:text-lg"
             >
               Jobair Uddin Jesan
             </h3>
-            <p
-              class="text-xs text-gray-600 sm:text-sm lg:text-base "
-            >
+            <p class="text-xs text-gray-600 sm:text-sm lg:text-base">
               Coding & Debugging
             </p>
           </div>
@@ -236,15 +233,13 @@
           />
           <div class="mt-2 sm:mt-4">
             <h3
-              class="text-sm font-medium text-gray-800 sm:text-base lg:text-lg "
+              class="text-sm font-medium text-gray-800 sm:text-base lg:text-lg"
             >
               Emdadul Islam
             </h3>
-            <p
-              class="text-xs text-gray-600 sm:text-sm lg:text-base "
-            >
-            Debugging & Frontend
-          </p>
+            <p class="text-xs text-gray-600 sm:text-sm lg:text-base">
+              Debugging & Frontend
+            </p>
           </div>
         </div>
         <div class="text-center">
@@ -255,15 +250,11 @@
           />
           <div class="mt-2 sm:mt-4">
             <h3
-              class="text-sm font-medium text-gray-800 sm:text-base lg:text-lg "
+              class="text-sm font-medium text-gray-800 sm:text-base lg:text-lg"
             >
               Sakif Azwad
             </h3>
-            <p
-              class="text-xs text-gray-600 sm:text-sm lg:text-base "
-            >
-              Testing
-            </p>
+            <p class="text-xs text-gray-600 sm:text-sm lg:text-base">Testing</p>
           </div>
         </div>
       </div>

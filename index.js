@@ -1,3 +1,7 @@
+const X = [];
+const Y = [];
+const Z = [];
+
 function analyzeMatrix(matrixValues, b) {
   if (matrixValues.length !== 9) {
     document.getElementById("errorMsg").innerHTML = "Invalid matrix size.";
@@ -18,7 +22,7 @@ function analyzeMatrix(matrixValues, b) {
 
   let extras = extra;
 
-  showLogMsg("Inverse Matrix sol: ", [inverseMatrixs(extras, matrixB)]);
+  showLogMsg("Inverse Matrix sol: ", inverseMatrixs(extras, matrixB));
 
   crammer(det, b);
 
@@ -62,7 +66,11 @@ function crammer(det, B) {
     //cout << Ans_D0 <<  " "  << Ans_D1 <<  " " <<  Ans_D2 <<  " "  <<  Ans_D3 << endl; // to check
     const solution = [x, y, z];
 
-    showLogMsg("Cramer's Rule", [solution]);
+    X.push(x);
+    Y.push(y);
+    Z.push(z);
+
+    showLogMsg("Cramer's Rule", solution);
   } else {
     const errorMsg = document.getElementById("errorMsg");
     errorMsg.innerHTML = "There are Infinite solutions or NO solution.";
@@ -91,7 +99,11 @@ function gaussElimination(matrix) {
     solution[i] = matrix[i][n];
   }
 
-  showLogMsg("Gauss Elimination : ", [solution]);
+  X.push(solution[0]);
+  Y.push(solution[1]);
+  Z.push(solution[2]);
+
+  showLogMsg("Gauss Elimination : ", solution);
 
   return solution;
 }
@@ -129,6 +141,10 @@ function multiply(matrix1, matrix2) {
       result[i][0] += matrix1[i][j] * matrix2[j][0];
     }
   }
+
+  X.push(result[0][0]);
+  Y.push(result[1][0]);
+  Z.push(result[2][0]);
 
   return result;
 }
@@ -172,78 +188,14 @@ function inverseMatrixs(det, b) {
   return multiply(inverseMatrix, b);
 }
 
-function jacobiMethod(A, b, x, maxIterations, tolerance) {
-  // const n = b.length;
-  // const x_new = new Array(n);
-
-  // for (let iter = 0; iter < maxIterations; ++iter) {
-  //   for (let i = 0; i < n; ++i) {
-  //     x_new[i] = b[i];
-
-  //     for (let j = 0; j < n; ++j) {
-  //       if (i !== j) {
-  //         x_new[i] -= A[i][j] * x[j];
-  //       }
-  //     }
-
-  //     x_new[i] /= A[i][i];
-  //   }
-
-  //   // Check for convergence
-  //   let maxDiff = 0.0;
-  //   for (let i = 0; i < n; ++i) {
-  //     maxDiff = Math.max(maxDiff, Math.abs(x_new[i] - x[i]));
-  //   }
-
-  //   // Update solution
-  //   for (let i = 0; i < n; ++i) {
-  //     x[i] = x_new[i];
-  //   }
-
-  //   // Check for convergence
-  //   if (maxDiff < tolerance) {
-  //     console.log(`Converged after ${iter + 1} iterations.`);
-
-  //     showLogMsg("Jacobi Method", [x]);
-  //     return;
-  //   }
-  // }
-
-  // document.getElementById("logMsg").innerHTML =
-  //   "Maximum number of iterations reached";
-
-  // const n = b.length;
-  // const x_new = new Array(n);
-
-  // do {
-  //   for (let i = 0; i < n; ++i) {
-  //     x_new[i] = b[i];
-
-  //     for (let j = 0; j < n; ++j) {
-  //       if (i !== j) {
-  //         x_new[i] -= A[i][j] * x[j];
-  //       }
-  //     }
-
-  //     x_new[i] /= A[i][i];
-  //   }
-
-  //   // Calculate errors
-  //   const errors = x.map((xi, i) => Math.abs(xi - x_new[i]));
-
-  //   // Update solution
-  //   x = x_new.slice();
-
-  //   // Check for convergence
-  // } while (errors.some((error) => error > tolerance));
-
-  // return x;
-}
+function jacobiMethod(A, b, x, maxIterations, tolerance) {}
 
 // Main program
 
 function submitForm(event) {
   event.preventDefault();
+
+  console.log(X, Y, Z)
 
   const matrixValues = [];
   for (let i = 1; i <= 12; i++) {
@@ -287,24 +239,19 @@ function randomize() {
 
 function showLogMsg(title, matrix) {
   const logMsg = document.getElementById("logMsg");
-
   const p = document.createElement("p");
-
   p.style = "font-weight: bold";
-
   p.innerHTML = title;
-
   logMsg.appendChild(p);
 
   const table = document.createElement("table");
+  const row = document.createElement("tr");
+
   for (let i = 0; i < matrix.length; i++) {
-    const row = document.createElement("tr");
-    for (let j = 0; j < matrix[i].length; j++) {
-      const col = document.createElement("td");
-      col.style = "padding: 6px";
-      col.innerHTML = matrix[i][j];
-      row.appendChild(col);
-    }
+    const col = document.createElement("td");
+    col.style = "padding: 6px";
+    col.innerHTML = matrix[i];
+    row.appendChild(col);
     table.appendChild(row);
   }
 
@@ -329,29 +276,64 @@ function showTeam() {
   document.getElementById("team").style.display = "block";
 }
 
-// chart
-
-const ctx = document.getElementById("myChart");
-
-new Chart(ctx, {
-  type: "bar",
-  data: {
-    labels: ["Inverse", "Cramer's", "Gauss El.", "Jaccobi"],
-    datasets: [
-      {
-        label: "# of Votes",
-        data: [12, 19, 3, 5, 2, 3],
-        borderWidth: 1,
-      },
+var options = {
+  series: [
+    {
+      name: "X",
+      data: X,
+    },
+    {
+      name: "Y",
+      data: Y,
+    },
+    {
+      name: "Z",
+      data: Z,
+    },
+  ],
+  chart: {
+    type: "line",
+    height: 350,
+  },
+  plotOptions: {
+    bar: {
+      horizontal: false,
+      columnWidth: "55%",
+      endingShape: "rounded",
+    },
+  },
+  dataLabels: {
+    enabled: false,
+  },
+  stroke: {
+    show: true,
+    width: 2,
+    colors: ["transparent"],
+  },
+  xaxis: {
+    categories: [
+      "Inverse Matrix",
+      "Cramer's Rule",
+      "Gauss Elimination",
+      
     ],
   },
-  options: {
-    scales: {
-      y: {
-        beginAtZero: true,
+  yaxis: {
+    title: {
+      text: "Solution",
+    },
+  },
+  fill: {
+    opacity: 1,
+  },
+  tooltip: {
+    y: {
+      formatter: function (val) {
+        return val;
       },
     },
   },
-});
+};
 
-// team
+var chart = new ApexCharts(document.getElementById("myChart"), options);
+chart.render();
