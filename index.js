@@ -5,6 +5,13 @@ let crammer_itr = 1;
 let jacobi_itr  = 0;
 let gauss_itr = 0;
 let inverse_itr = 0;
+
+let crammer_time = 0;
+let jacobi_time  = 0;
+let gauss_time = 0;
+let inverse_time = 0;
+
+
 function analyzeMatrix(matrixValues, b) {
   if (matrixValues.length !== 9) {
     document.getElementById("errorMsg").innerHTML = "Invalid matrix size.";
@@ -58,10 +65,12 @@ function analyzeMatrix(matrixValues, b) {
   showTimeline();
 
   console.log(jacobi_itr + " < > " + gauss_itr + " < > " + crammer_itr + " < > " + inverse_itr );
+  console.log(jacobi_time + " < > " + gauss_time + " < > " + crammer_time + " < > " + inverse_time );
 }
 
 function crammer(det, B) {
   /// perfectly choltese
+  const startTime = performance.now();
   Ans_D0 =
     det[0][0] * (det[1][1] * det[2][2] - det[2][1] * det[1][2]) -
     det[0][1] * (det[1][0] * det[2][2] - det[2][0] * det[1][2]) +
@@ -88,12 +97,14 @@ function crammer(det, B) {
     z = Ans_D3 / Ans_D0;
     //cout << Ans_D0 <<  " "  << Ans_D1 <<  " " <<  Ans_D2 <<  " "  <<  Ans_D3 << endl; // to check
     const solution = [x, y, z];
-
+    const EndTime = performance.now();
+    crammer_time = EndTime - startTime;
     X.push(x);
     Y.push(y);
     Z.push(z);
-
+    
     showLogMsg("Cramer's Rule", solution);
+
   } else {
     const errorMsg = document.getElementById("errorMsg");
     errorMsg.innerHTML = "There are Infinite solutions or NO solution.";
@@ -101,8 +112,8 @@ function crammer(det, B) {
 }
 
 function gaussElimination(matrix) {
+  const startTime = performance.now();
   const n = matrix.length;
-
   for (let i = 0; i < n; i++) {
     let divisor = matrix[i][i];
     for (let j = i; j < n + 1; j++) {
@@ -129,7 +140,8 @@ function gaussElimination(matrix) {
   Z.push(solution[2]);
 
   showLogMsg("Gauss Elimination : ", solution);
-
+  const EndTime = performance.now();
+  gauss_time = EndTime - startTime;
   return solution;
 }
 
@@ -176,6 +188,7 @@ function multiply(matrix1, matrix2) {
 }
 
 function inverseMatrixs(det, b) {
+  const startTime = performance.now();
   const n = det.length;
 
   let inverseMatrix = [];
@@ -196,8 +209,13 @@ function inverseMatrixs(det, b) {
 
   let d = Ans;
 
-  document.getElementById("logMsg").innerHTML = "Determinant: " + d;
-
+  //document.getElementById("logMsg").innerHTML = "Determinant: " + d;
+  const logMsg = document.getElementById("logMsg")
+  const h1 = document.createElement("h1")
+  h1.innerHTML= "Determinant: " + d;
+  h1.style = "font-weight:bold";
+  h1.style.color = "blue"
+  logMsg.appendChild(h1);
   if (d !== 0) {
     for (let i = 0; i < n; i++) {
       for (let j = 0; j < n; j++) {
@@ -213,10 +231,14 @@ function inverseMatrixs(det, b) {
   }
   // X = A-1 * B;
   // console.table(b);
-  return multiply(inverseMatrix, b);
+  let XX = multiply(inverseMatrix, b);
+  const EndTime = performance.now();
+  inverse_time = EndTime - startTime;
+  return XX;
 }
 
 function jacobiMethod(matrix, b, initial, tolerance, maxIterations) {
+  const startTime = performance.now();
   const n = matrix.length;
   let x = initial.slice();
 
@@ -249,6 +271,8 @@ function jacobiMethod(matrix, b, initial, tolerance, maxIterations) {
     if (maxDiff < tolerance) {
       console.log(`Converged in ${itr + 1}itr `);
       jacobi_itr = itr + 1;
+      const EndTime = performance.now();
+      jacobi_time = EndTime - startTime;
       return xNext;
     }
 
@@ -410,6 +434,9 @@ function showChart(X, Y, Z) {
         "Jacobi",
       ],
     },
+    title: {
+      text: 'Value of X Y Z for every Methods'
+    },
     yaxis: {
       title: {
         text: "Solution",
@@ -483,7 +510,7 @@ function showIteration(){
 function showTimeline(){
   var options = {
     series: [{
-    data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380]
+    data: [inverse_time, crammer_time, gauss_time, jacobi_time]
   }],
     chart: {
     type: 'bar',
@@ -495,13 +522,14 @@ function showTimeline(){
       horizontal: true,
     }
   },
+  title: {
+    text: 'Runtime for every Method (ms)'
+  },
   dataLabels: {
     enabled: false
   },
   xaxis: {
-    categories: ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy', 'France', 'Japan',
-      'United States', 'China', 'Germany'
-    ],
+    categories: ['Inverse', 'Cramers', 'Gauss-E', 'Jacobi'],
   }
   };
 
@@ -510,3 +538,7 @@ function showTimeline(){
 
 
 }
+
+showChart(X, Y, Z);
+  showIteration();
+  showTimeline();
