@@ -38,7 +38,9 @@ function analyzeMatrix(matrixValues, b) {
 
   crammer(extra_det, b);
 
-  gaussElimination(extra);
+  
+
+  gaussianElimination(extra,3);
 
   // jacobi
   const x = [0, 0, 0];
@@ -125,40 +127,58 @@ function crammer(det, B) {
   }
 }
 
-function gaussElimination(matrix) {
+function gaussianElimination(matrix, n) {
   const startTime = performance.now();
-  const n = matrix.length;
-  for (let i = 0; i < n; i++) {
-    let divisor = matrix[i][i];
-    for (let j = i; j < n + 1; j++) {
-      matrix[i][j] /= divisor;
-      gauss_itr++; // itrattion
+  console.table(matrix);
+  for (let i = 0; i < n; i++) 
+  {
+    let maxRow = i;
+    for (let k = i + 1; k < n; k++) {
+      if (Math.abs(matrix[k][i]) > Math.abs(matrix[maxRow][i])) {
+        maxRow = k;
+      }
     }
+
+    [matrix[i], matrix[maxRow]] = [matrix[maxRow], matrix[i]];
+
+    // Make the diagonal element 1
+    const pivot = matrix[i][i];
+    if (Math.abs(pivot) < 0.0005) {
+      // Matrix is singular
+      // console.log("matrix is singular");
+      return;
+    }
+
+    for (let j = i; j <= n; j++) {
+      matrix[i][j] /= pivot;
+    }
+
+    // Make other elements in the column zero
     for (let k = 0; k < n; k++) {
       if (k !== i) {
-        let factor = matrix[k][i];
-        for (let j = i; j < n + 1; j++) {
+        const factor = matrix[k][i];
+        for (let j = i; j <= n; j++) {
           matrix[k][j] -= factor * matrix[i][j];
-          gauss_itr++; // iteration
         }
       }
     }
+    
   }
-  let solution = new Array(n);
-  for (let i = 0; i < n; i++) {
-    solution[i] = matrix[i][n];
-  }
+ // console.log(matrix[0][3] + " " + matrix[1][3] + " " + matrix[2][3]);
 
-  X.push(solution[0]);
-  Y.push(solution[1]);
-  Z.push(solution[2]);
+    let solution = new Array(n);
+    solution[0] = matrix[0][3];
+    solution[1] = matrix[1][3];
+    solution[2] = matrix[2][3];
+    X.push(solution[0]);
+    Y.push(solution[1]);
+    Z.push(solution[2]);
 
-  showLogMsg("Gauss Elimination : ", solution);
-  const EndTime = performance.now();
-  gauss_time = EndTime - startTime;
-  return solution;
+    showLogMsg("Gauss Elimination : ", solution);
+    const EndTime = performance.now();
+    gauss_time = EndTime - startTime;
+    return solution;
 }
-
 // function matrixMultiplication(matrixA, matrixB) {
 //   let result = [];
 //   for (let i = 0; i < 3; i++) {

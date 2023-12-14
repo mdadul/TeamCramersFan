@@ -50,3 +50,5 @@ const maxIterations = 100;
 
 const solution = jacobiMethod(coefficients, constants, initialGuess, tolerance, maxIterations);
 console.log("Solution:", solution);
+
+
