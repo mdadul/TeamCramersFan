@@ -2,15 +2,14 @@ let X = [];
 let Y = [];
 let Z = [];
 let crammer_itr = 1;
-let jacobi_itr  = 0;
+let jacobi_itr = 0;
 let gauss_itr = 0;
 let inverse_itr = 0;
 
 let crammer_time = 0;
-let jacobi_time  = 0;
+let jacobi_time = 0;
 let gauss_time = 0;
 let inverse_time = 0;
-
 
 function analyzeMatrix(matrixValues, b) {
   if (matrixValues.length !== 9) {
@@ -64,8 +63,24 @@ function analyzeMatrix(matrixValues, b) {
   showIteration();
   showTimeline();
 
-  console.log(jacobi_itr + " < > " + gauss_itr + " < > " + crammer_itr + " < > " + inverse_itr );
-  console.log(jacobi_time + " < > " + gauss_time + " < > " + crammer_time + " < > " + inverse_time );
+  console.log(
+    jacobi_itr +
+      " < > " +
+      gauss_itr +
+      " < > " +
+      crammer_itr +
+      " < > " +
+      inverse_itr
+  );
+  console.log(
+    jacobi_time +
+      " < > " +
+      gauss_time +
+      " < > " +
+      crammer_time +
+      " < > " +
+      inverse_time
+  );
 }
 
 function crammer(det, B) {
@@ -102,9 +117,8 @@ function crammer(det, B) {
     X.push(x);
     Y.push(y);
     Z.push(z);
-    
-    showLogMsg("Cramer's Rule", solution);
 
+    showLogMsg("Cramer's Rule", solution);
   } else {
     const errorMsg = document.getElementById("errorMsg");
     errorMsg.innerHTML = "There are Infinite solutions or NO solution.";
@@ -204,17 +218,17 @@ function inverseMatrixs(det, b) {
       det[0][k] *
       (det[1][(k + 1) % n] * det[2][(k + 2) % n] -
         det[1][(k + 2) % n] * det[2][(k + 1) % n]);
-        inverse_itr++
+    inverse_itr++;
   }
 
   let d = Ans;
 
   //document.getElementById("logMsg").innerHTML = "Determinant: " + d;
-  const logMsg = document.getElementById("logMsg")
-  const h1 = document.createElement("h1")
-  h1.innerHTML= "Determinant: " + d;
+  const logMsg = document.getElementById("logMsg");
+  const h1 = document.createElement("h1");
+  h1.innerHTML = "Determinant: " + d;
   h1.style = "font-weight:bold";
-  h1.style.color = "blue"
+  h1.style.color = "blue";
   logMsg.appendChild(h1);
   if (d !== 0) {
     for (let i = 0; i < n; i++) {
@@ -223,7 +237,7 @@ function inverseMatrixs(det, b) {
           (det[(j + 1) % n][(i + 1) % n] * det[(j + 2) % n][(i + 2) % n] -
             det[(j + 1) % n][(i + 2) % n] * det[(j + 2) % n][(i + 1) % n]) /
           d;
-          inverse_itr++
+        inverse_itr++;
       }
     }
   } else {
@@ -251,7 +265,6 @@ function jacobiMethod(matrix, b, initial, tolerance, maxIterations) {
         if (i !== j) {
           sum -= matrix[i][j] * x[j];
         }
-       
       }
       xNext[i] = sum / matrix[i][i];
     }
@@ -262,11 +275,8 @@ function jacobiMethod(matrix, b, initial, tolerance, maxIterations) {
       const diff = Math.abs(xNext[i] - x[i]);
       if (diff > maxDiff) {
         maxDiff = diff;
-       
-
       }
     }
-   
 
     if (maxDiff < tolerance) {
       console.log(`Converged in ${itr + 1}itr `);
@@ -323,6 +333,17 @@ function resetForm() {
   Z = [];
   showChart(X, Y, Z);
   resetLog();
+
+  inverse_itr = 0;
+  crammer_itr = 1;
+  gauss_itr = 0;
+  jacobi_itr = 0;
+
+  crammer_time = 0;
+  jacobi_time = 0;
+  gauss_time = 0;
+  inverse_time = 0;
+  
 }
 
 function randomize() {
@@ -435,7 +456,7 @@ function showChart(X, Y, Z) {
       ],
     },
     title: {
-      text: 'Value of X Y Z for every Methods'
+      text: "Value of X Y Z for every Methods",
     },
     yaxis: {
       title: {
@@ -458,87 +479,89 @@ function showChart(X, Y, Z) {
   chart.render();
 }
 
-
-function showIteration(){
-     
+function showIteration() {
   var options = {
     series: [inverse_itr, crammer_itr, gauss_itr, jacobi_itr],
     chart: {
-    width: 380,
-    type: 'donut',
-  },
-  plotOptions: {
-    pie: {
-      startAngle: -90,
-      endAngle: 270
-    }
-  },
-  dataLabels: {
-    enabled: false
-  },
-  fill: {
-    type: 'gradient',
-  },
-  legend: {
-    formatter: function(val, opts) {
-      var legendNames = ['Inverse', 'Cramers', 'Gauss', 'Jacobi'];
-      return legendNames[opts.seriesIndex] + " - " + opts.w.globals.series[opts.seriesIndex];
-    }
-  },
-  title: {
-    text: 'Number of iterations done by every Method'
-  },
-  responsive: [{
-    breakpoint: 480,
-    options: {
-      chart: {
-        width: 200
+      width: 380,
+      type: "donut",
+    },
+    plotOptions: {
+      pie: {
+        startAngle: -90,
+        endAngle: 270,
       },
-      legend: {
-        position: 'bottom'
-      }
-    }
-  }]
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    fill: {
+      type: "gradient",
+    },
+    legend: {
+      formatter: function (val, opts) {
+        var legendNames = ["Inverse", "Cramers", "Gauss", "Jacobi"];
+        return (
+          legendNames[opts.seriesIndex] +
+          " - " +
+          opts.w.globals.series[opts.seriesIndex]
+        );
+      },
+    },
+    title: {
+      text: "Number of iterations done by every Method",
+    },
+    responsive: [
+      {
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 200,
+          },
+          legend: {
+            position: "bottom",
+          },
+        },
+      },
+    ],
   };
 
   var chart = new ApexCharts(document.querySelector("#pieChart"), options);
   chart.render();
-
 }
 
-
-function showTimeline(){
+function showTimeline() {
   var options = {
-    series: [{
-    data: [inverse_time, crammer_time, gauss_time, jacobi_time]
-  }],
+    series: [
+      {
+        data: [inverse_time, crammer_time, gauss_time, jacobi_time],
+      },
+    ],
     chart: {
-    type: 'bar',
-    height: 350
-  },
-  plotOptions: {
-    bar: {
-      borderRadius: 4,
-      horizontal: true,
-    }
-  },
-  title: {
-    text: 'Runtime for every Method (ms)'
-  },
-  dataLabels: {
-    enabled: false
-  },
-  xaxis: {
-    categories: ['Inverse', 'Cramers', 'Gauss-E', 'Jacobi'],
-  }
+      type: "bar",
+      height: 350,
+    },
+    plotOptions: {
+      bar: {
+        borderRadius: 4,
+        horizontal: true,
+      },
+    },
+    title: {
+      text: "Runtime for every Method (ms)",
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    xaxis: {
+      categories: ["Inverse", "Cramers", "Gauss-E", "Jacobi"],
+    },
   };
 
   var chart = new ApexCharts(document.querySelector("#barChart"), options);
   chart.render();
-
-
 }
 
 showChart(X, Y, Z);
-  showIteration();
-  showTimeline();
+showIteration();
+showTimeline();

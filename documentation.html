@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=fill, initial-scale=1.0" />
+    <title>Team Cramer's Fan - Documentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="px-5 py-4">
+    <header class="container">
+      <a
+        href="/index.html"
+        class="text-md bg-blue-600 text-white px-6 py-2 rounded-md"
+        >Go Back</a
+      >
+    </header>
+
+    <article class="text-md mt-5">
+      <h1 class="text-2xl font-semibold">
+        Team Cramer's Fan - System of Linear Equations Solver
+      </h1>
+
+      <div class="mt-2">
+        <h2 class="text-lg font-semibold">Introduction</h2>
+        <p class="text-base my-2">
+          Welcome to Team Cramer's Fan's System of Linear Equations Solver! Our
+          project is designed to solve systems of linear equations using various
+          methods, including matrix inversion, Cramer's Rule, Gauss Elimination,
+          and Jacobi Iterative Method.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-lg font-semibold">Features</h2>
+        <p class="my-2 ml-2">
+          1. Matrix Input <br />
+          2. Analyze Button <br />
+          3. Randomize Button <br />
+          4. Reset Button <br />
+        </p>
+
+        <div class="ml-2">
+          <p>
+            <span class="font-semibold"> 1. Matrix Input: </span>
+            You can input a system of linear equations by entering the
+            coefficients in the provided matrix. The system supports up to 3
+            equations.
+          </p>
+          <p>
+            <span class="font-semibold">2. Analyze Button: </span>
+            Click the "Analyze" button to solve the system of linear equations
+            using the implemented methods.
+          </p>
+
+          <p>
+            <span class="font-semibold">3. Randomize Button: </span>
+            Need a quick example? Click the "Randomize" button to generate a
+            random set of 3 equations for analysis.
+          </p>
+
+          <p>
+            <span class="font-semibold">4. Reset Button: </span>
+            Made a mistake? No worries! Hit the "Reset" button to clear the
+            matrix and start fresh.
+          </p>
+        </div>
+      </div>
+
+      <div class="my-3">
+        <h2 class="text-lg font-semibold">Implemented Methods</h2>
+        <p class="ml-2">
+          1. Matrix Inversion <br />
+          2. Cramer's Rule <br />
+          3. Gauss Elimination <br />
+          4. Jacobi Iterative Method <br />
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-lg font-semibold">Graphical Analysis</h2>
+        <p class="ml-2">
+          1. Bar Chart - Solution of XYZ Visual representation of the solution
+          for variables X, Y, and Z. <br />
+          2. Pie Chart - Iteration Convergence Shows the percentage of
+          iterations needed for convergence. <br />
+          3. Bar Chart - Time Taken Displays the time taken for each method to
+          solve the system.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-lg font-semibold my-2">Conclusion</h2>
+        <p>
+          Team Cramer's Fan is proud to present a versatile System of Linear
+          Equations Solver that employs a range of methods for solving
+          equations. Whether you prefer matrix inversion, Cramer's Rule, Gauss
+          Elimination, or Jacobi Iterative Method, our tool has you covered.
+          Happy solving!
+        </p>
+      </div>
+    </article>
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold mb-4">Inverse Matrix</h2>
+
+      <p class="mb-4">
+        The Inverse Matrix method involves finding the inverse of a square
+        matrix to solve a system of linear equations.
+      </p>
+
+      <p class="mb-4">Consider a system of linear equations:</p>
+
+      <div class="mb-4">
+        <pre class="bg-gray-200 p-2 rounded-md">
+                <code>
+                    Ax = B
+                </code>
+            </pre>
+      </div>
+
+      <p class="mb-4">
+        Where <code>A</code> is the coefficient matrix, <code>x</code> is the
+        vector of variables, and <code>B</code> is the constant matrix.
+      </p>
+
+      <p class="mb-4">
+        To solve for <code>x</code>, we find the inverse of <code>A</code> and
+        multiply both sides by it:
+      </p>
+
+      <div class="mb-4">
+        <pre class="bg-gray-200 p-2 rounded-md">
+                <code>
+                    x = A<sup>-1</sup> * B
+                </code>
+            </pre>
+      </div>
+
+      <p class="mb-4">Let's consider an example:</p>
+
+      <div class="mb-4">
+        <pre class="bg-gray-200 p-2 rounded-md">
+                <code>
+                    A = | 2  1 |
+                        | 4 -3 |
+
+                    B = | 5 |
+                        |-3 |
+                </code>
+            </pre>
+      </div>
+
+      <p class="mb-4">The inverse of <code>A</code> is:</p>
+
+      <div class="mb-4">
+        <pre class="bg-gray-200 p-2 rounded-md">
+                <code>
+                    A<sup>-1</sup> = | 3  1 |
+                          | 4  2 |
+                </code>
+            </pre>
+      </div>
+
+      <p>The solution <code>x</code> is then:</p>
+
+      <div class="mb-4">
+        <pre class="bg-gray-200 p-2 rounded-md">
+                <code>
+                    x = A<sup>-1</sup> * B
+                      = | 3  1 |   | 5 |   |  8 |
+                        | 4  2 |   |-3 |   |  6 |
+                </code>
+            </pre>
+      </div>
+    </div>
+
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold mb-4">Cramer's Rule</h2>
+
+      <p class="mb-4">
+        Cramer's Rule provides a method to solve a system of linear equations by
+        expressing the solution in terms of determinants.
+      </p>
+
+      <p class="mb-4">Consider the system of linear equations:</p>
+
+      <div class="mb-4">
+        <pre class="bg-gray-200 p-2 rounded-md">
+                <code>
+                    Ax = B
+                </code>
+            </pre>
+      </div>
+
+      <p class="mb-4">
+        The solution for variable <code>x<sub>i</sub></code> is given by:
+      </p>
+
+      <div class="mb-4">
+        <pre class="bg-gray-200 p-2 rounded-md">
+                <code>
+                    x<sub>i</sub> = det(A<sub>i</sub>) / det(A)
+                </code>
+            </pre>
+      </div>
+
+      <p class="mb-4">
+        Where <code>A<sub>i</sub></code> is the matrix obtained by replacing the
+        <code>i</code>-th column of <code>A</code> with the column vector
+        <code>B</code>.
+      </p>
+
+      <p class="mb-4">Let's consider an example:</p>
+
+      <div class="mb-4">
+        <pre class="bg-gray-200 p-2 rounded-md">
+                <code>
+                    A = | 2  1 |
+                        | 4 -3 |
+    
+                    B = | 5 |
+                        |-3 |
+                </code>
+            </pre>
+      </div>
+
+      <p>The determinants are:</p>
+
+      <div class="mb-4">
+        <pre class="bg-gray-200 p-2 rounded-md">
+                <code>
+                    det(A) = -10
+    
+                    det(A<sub>1</sub>) = |  5  1 |
+                              | -3 -3 |
+                            = 16
+    
+                    det(A<sub>2</sub>) = |  2  5 |
+                              |  4 -3 |
+                            = 26
+                </code>
+            </pre>
+      </div>
+
+      <p>The solutions are then:</p>
+
+      <div class="mb-4">
+        <pre class="bg-gray-200 p-2 rounded-md">
+                <code>
+                    x<sub>1</sub> = det(A<sub>1</sub>) / det(A) = -1.6
+                    x<sub>2</sub> = det(A<sub>2</sub>) / det(A) = -2.6
+                </code>
+            </pre>
+      </div>
+    </div>
+
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold mb-4">Gauss Elimination</h2>
+
+      <p class="mb-4">
+        Gauss Elimination is a systematic method for solving systems of linear
+        equations by transforming the augmented matrix to its row-echelon form.
+      </p>
+
+      <p class="mb-4">Consider the augmented matrix [A | B]:</p>
+
+      <div class="mb-4">
+        <pre class="bg-gray-200 p-2 rounded-md">
+                <code>
+                    | 2  1 | 5 |
+                    | 4 -3 |-3 |
+                </code>
+            </pre>
+      </div>
+
+      <p class="mb-4">
+        Perform row operations to transform it to row-echelon form:
+      </p>
+
+      <div class="mb-4">
+        <pre class="bg-gray-200 p-2 rounded-md">
+                <code>
+                    | 1  0 |  3 |
+                    | 0  1 | -2 |
+                </code>
+            </pre>
+      </div>
+
+      <p class="mb-4">
+        The system of equations is now simplified, and the solutions can be
+        directly read off.
+      </p>
+
+      <p class="mb-4">The solution is:</p>
+
+      <div class="mb-4">
+        <pre class="bg-gray-200 p-2 rounded-md">
+                <code>
+                    x<sub>1</sub> = 3
+                    x<sub>2</sub> = -2
+                </code>
+            </pre>
+      </div>
+    </div>
+
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold mb-4">Jacobi Iterative Method</h2>
+
+      <p class="mb-4">
+        The Jacobi Iterative Method is an iterative approach to solving systems
+        of linear equations by updating the values of the variables in each
+        iteration.
+      </p>
+
+      <p class="mb-4">Consider the system of linear equations:</p>
+
+      <div class="mb-4">
+        <pre class="bg-gray-200 p-2 rounded-md">
+                <code>
+                    2x<sub>1</sub> + x<sub>2</sub> = 5
+                    4x<sub>1</sub> - 3x<sub>2</sub> = -3
+                </code>
+            </pre>
+      </div>
+
+      <p class="mb-4">Initialize the variables and update them iteratively:</p>
+
+      <div class="mb-4">
+        <pre class="bg-gray-200 p-2 rounded-md">
+                <code>
+                    Iteration 1:  x<sub>1</sub> = 0, x<sub>2</sub> = 0
+                    Iteration 2:  x<sub>1</sub> = 2.5, x<sub>2</sub> = -1.25
+                    Iteration 3:  x<sub>1</sub> = 1.625, x<sub>2</sub> = -0.375
+                    ...
+                </code>
+            </pre>
+      </div>
+
+      <p class="mb-4">
+        Continue iterating until convergence is reached, i.e., the values
+        stabilize.
+      </p>
+    </div>
+  </body>
+</html>
