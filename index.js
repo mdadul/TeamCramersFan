@@ -136,6 +136,7 @@ function gaussianElimination(matrix, n) {
     for (let k = i + 1; k < n; k++) {
       if (Math.abs(matrix[k][i]) > Math.abs(matrix[maxRow][i])) {
         maxRow = k;
+        gauss_time++;
       }
     }
 
@@ -151,6 +152,7 @@ function gaussianElimination(matrix, n) {
 
     for (let j = i; j <= n; j++) {
       matrix[i][j] /= pivot;
+      gauss_time++;
     }
 
     // Make other elements in the column zero
@@ -159,6 +161,7 @@ function gaussianElimination(matrix, n) {
         const factor = matrix[k][i];
         for (let j = i; j <= n; j++) {
           matrix[k][j] -= factor * matrix[i][j];
+          gauss_time++;
         }
       }
     }
