@@ -136,7 +136,7 @@ function gaussianElimination(matrix, n) {
     for (let k = i + 1; k < n; k++) {
       if (Math.abs(matrix[k][i]) > Math.abs(matrix[maxRow][i])) {
         maxRow = k;
-        gauss_time++;
+        gauss_itr++;
       }
     }
 
