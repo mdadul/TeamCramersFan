@@ -152,7 +152,7 @@ function gaussianElimination(matrix, n) {
 
     for (let j = i; j <= n; j++) {
       matrix[i][j] /= pivot;
-      gauss_time++;
+      gauss_itr++;
     }
 
     // Make other elements in the column zero
@@ -161,7 +161,7 @@ function gaussianElimination(matrix, n) {
         const factor = matrix[k][i];
         for (let j = i; j <= n; j++) {
           matrix[k][j] -= factor * matrix[i][j];
-          gauss_time++;
+          gauss_itr++;
         }
       }
     }
